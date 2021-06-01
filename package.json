@@ -2,11 +2,11 @@
   "name": "passport-passwordless",
   "version": "0.0.4",
   "description": "Passport module for the passwordless library.",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "tobias.winkler@outlook.de",
+  "author": "Markus Moltke",
   "license": "ISC",
   "dependencies": {
     "bs58": "^3.0.0",
@@ -15,5 +15,16 @@
     "passwordless": "^1.1.1",
     "passwordless-tokenstore": "0.0.10",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.1",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
   }
 }
