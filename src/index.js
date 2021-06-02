@@ -1,4 +1,3 @@
-var util = require('util')
 import * as crypto from 'crypto'
 const base58 = require('bs58')
 import { Strategy } from 'passport'
@@ -61,7 +60,7 @@ export default class PasswordlessStrategy extends Strategy {
     }
 
     //check for a valid delivery (a function or a described object for predefined ones)
-    if (!this.options.delivery || !util.isFunction(this.options.delivery)) {
+    if (!this.options.delivery) {
       throw new Error(
         'Delivery parameter is missing or invalid! Please specify a valid delivery! ' +
           'The delivery must be a functions'
@@ -101,7 +100,7 @@ export default class PasswordlessStrategy extends Strategy {
   //Passport authentication function
   authenticate = function (req, options) {
     //merge configiration options with the applied options and check if all was set right
-    this.options = { ...this.options, ...options }
+    const options = { ...this.options, ...options }
 
     //initialize passwordless with the current options
     if (this.options.dynamicConfig) {
@@ -110,9 +109,9 @@ export default class PasswordlessStrategy extends Strategy {
 
     //get request parameters to check the authentication state
     const combined = { ...req.query, ...req.body }
-    var email = combined[this.options.userField || 'user']
-    var token = combined[this.options.tokenField || 'token']
-    var uid = combined[this.options.uidField || 'uid']
+    var email = combined[options.userField || 'user']
+    var token = combined[options.tokenField || 'token']
+    var uid = combined[options.uidField || 'uid']
     //if a token and a uid was specified, verify the token
     //if only a user was specified, generate a token and send it
     //else send an error to specifiy valid values
@@ -123,7 +122,7 @@ export default class PasswordlessStrategy extends Strategy {
     } else {
       this.error(
         'Could not authenticate! Please specify a user id for the specified delivery (' +
-          this.options.delivery.type +
+          options.delivery.type +
           ') or specify a valid token and uid!'
       )
     }

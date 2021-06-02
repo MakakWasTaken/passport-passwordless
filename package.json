@@ -2,22 +2,20 @@
   "name": "passport-passwordless",
   "version": "0.0.4",
   "description": "Passport module for the passwordless library.",
-  "main": "index.ts",
+  "main": "./src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/index.ts"
   },
+  "types": "./src/index.d.ts",
   "author": "Markus Moltke",
   "license": "ISC",
   "dependencies": {
     "@types/bs58": "^4.0.1",
-    "@types/passport-strategy": "^0.2.35",
+    "@types/express": "*",
     "bs58": "^3.0.0",
     "crypto": "0.0.3",
-    "passport-strategy": "^1.0.0",
-    "passwordless": "^1.1.1",
-    "passwordless-tokenstore": "0.0.10",
-    "underscore": "^1.8.3"
+    "passport": "*",
+    "passwordless": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",

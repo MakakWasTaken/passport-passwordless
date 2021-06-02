@@ -47,34 +47,8 @@ module.exports = {
   //    ... do delivery stuff..
   //    callback(err);
   //  });
-  delivery: {
-    type: 'emailjs',
-    allowGet: true,
-    path: __dirname + '/node_modules/emailjs',
-    config: {
-      server: {
-        user: 'test.user@domain.com',
-        password: 'yourPwd',
-        host: 'yourSmtp',
-        ssl: true,
-      },
-
-      //all message parameters are compiled as an underscore template (http://underscorejs.org/#template)
-      //the following parameters are available:
-      // {
-      //   hostName    : 'localhost:3000',
-      //   tokenToSend : tokenToSend,
-      //   uidToSend   : uidToSend,
-      //   recipient   : recipient,
-      //   req         : req
-      // }
-      msg: {
-        text: 'Hello!\nAccess your account here: http://<%= hostname %>?token=<%= tokenToSend %>&uid=',
-        //a html property was added by my self, to be able add html body automatically to the configuration
-        html: '<html><p>Hello</p><br><p>Access your account here: http://<%= hostname %>?token=<%= tokenToSend %>&uid=<%= uidToSend %></p>',
-        subject: 'Token for <%= hostname %>',
-      },
-    },
+  delivery: function (tokenToSend, uidToSend, recipient, callback, req) {
+    //Send the token using the
   },
 
   //is used to check if an user is authorized to request a token
