@@ -1,14 +1,14 @@
-import * as crypto from 'crypto'
 const base58 = require('bs58')
-import { Strategy } from 'passport'
+const { Strategy } = require('passport')
 
-export default class PasswordlessStrategy extends Strategy {
+module.exports = class PasswordlessStrategy extends Strategy {
   constructor(_options, _verify) {
+    super()
     this.name = 'passwordless'
 
     //bind passwordless to the current instance to provide multiple strategies at the same time
-    this.options = options
-    this._verify = verify
+    this.options = _options
+    this._verify = _verify
 
     //check if dynamicConfig should not be used
     //  initialize only single passwordless instance with one configuration
@@ -100,18 +100,18 @@ export default class PasswordlessStrategy extends Strategy {
   //Passport authentication function
   authenticate = function (req, options) {
     //merge configiration options with the applied options and check if all was set right
-    const options = { ...this.options, ...options }
+    const tmpOptions = { ...this.options, ...options }
 
     //initialize passwordless with the current options
-    if (this.options.dynamicConfig) {
+    if (tmpOptions.dynamicConfig) {
       this.initPasswordless()
     }
 
     //get request parameters to check the authentication state
     const combined = { ...req.query, ...req.body }
-    var email = combined[options.userField || 'user']
-    var token = combined[options.tokenField || 'token']
-    var uid = combined[options.uidField || 'uid']
+    var email = combined[tmpOptions.userField || 'user']
+    var token = combined[tmpOptions.tokenField || 'token']
+    var uid = combined[tmpOptions.uidField || 'uid']
     //if a token and a uid was specified, verify the token
     //if only a user was specified, generate a token and send it
     //else send an error to specifiy valid values
@@ -122,7 +122,7 @@ export default class PasswordlessStrategy extends Strategy {
     } else {
       this.error(
         'Could not authenticate! Please specify a user id for the specified delivery (' +
-          options.delivery.type +
+          tmpOptions.delivery.type +
           ') or specify a valid token and uid!'
       )
     }

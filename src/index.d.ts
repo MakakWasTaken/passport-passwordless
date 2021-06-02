@@ -1,6 +1,6 @@
 import * as express from 'express'
 
-declare namespace PasswordlessStrategy {
+declare module 'passport-passwordless' {
   interface StrategyStatic {
     new (options: StrategyOptions, verify: StrategyVerify): StrategyInstance
   }
@@ -37,6 +37,3 @@ declare namespace PasswordlessStrategy {
     done: (error: string, user?: any, info?: { [key: string]: any }) => void
   ) => void
 }
-
-declare const PasswordlessStrategy: PasswordlessStrategy.StrategyStatic
-export default PasswordlessStrategy
