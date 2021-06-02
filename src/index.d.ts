@@ -39,4 +39,4 @@ declare namespace PasswordlessStrategy {
 }
 
 declare const PasswordlessStrategy: PasswordlessStrategy.StrategyStatic
-export = PasswordlessStrategy
+export default PasswordlessStrategy
