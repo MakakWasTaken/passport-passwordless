@@ -16,6 +16,9 @@ declare namespace PasswordlessStrategy {
   interface StrategyOptions {
     dynamicConfig?: StrategyOptions
     store: any
+    userField?: string
+    tokenField?: string
+    uidField?: string
     delivery: (
       tokenToSend: string,
       uidToSend: string,
