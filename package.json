@@ -4,9 +4,9 @@
   "description": "Passport module for the passwordless library.",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node index.js"
   },
-  "types": "./src/index.d.ts",
+  "types": "./index.d.ts",
   "author": "Markus Moltke",
   "license": "ISC",
   "dependencies": {

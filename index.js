@@ -2,13 +2,13 @@ const base58 = require('bs58')
 const { Strategy } = require('passport')
 
 module.exports = class PasswordlessStrategy extends Strategy {
-  constructor(_options, _verify) {
+  constructor(options, verify) {
     super()
     this.name = 'passwordless'
 
     //bind passwordless to the current instance to provide multiple strategies at the same time
-    this.options = _options
-    this._verify = _verify
+    this.options = options
+    this._verify = verify
 
     //check if dynamicConfig should not be used
     //  initialize only single passwordless instance with one configuration
@@ -130,11 +130,12 @@ module.exports = class PasswordlessStrategy extends Strategy {
 
   //Use the specified delivery to genrate and send a token.
   useDelivery = function (req) {
+    const that = this
     //request a passwordlesstoken
     this.passwordless.requestToken(
       function (user, delivery, callback, req) {
         // usually you would want something like:
-        this.options.access(user, function (err, user) {
+        that.options.access(user, function (err, user) {
           if (user) {
             callback(err, user)
           } else {
@@ -145,25 +146,26 @@ module.exports = class PasswordlessStrategy extends Strategy {
       { ...this.options, userField: 'email' }
     )(req, {}, function (err) {
       if (err) {
-        this.error(err)
+        that.error(err)
       } else {
-        this.pass()
+        that.success()
       }
     })
   }
 
   //Use the a sended token to checkup validity.
   verifyToken = function (req, token, uid) {
+    const that = this
     //test the specified token and uid
     this.passwordless._tokenStore.authenticate(
       token,
       uid,
       function (err, valid) {
         if (err) {
-          this.error(err)
+          that.error(err)
         } else if (valid) {
           //if the token and uid combination was valid, verify the user
-          this._verify(req, uid, function (err, user, info) {
+          that._verify(req, uid, function (err, user, info) {
             if (err) {
               return this.error(err)
             }
@@ -173,18 +175,18 @@ module.exports = class PasswordlessStrategy extends Strategy {
 
             //if no token reuse is allowed, invalidate the token after the first authentication
             if (!this.options.allowTokenReuse) {
-              this.passwordless._tokenStore.invalidateUser(
+              that.passwordless._tokenStore.invalidateUser(
                 uid.toString(),
                 function () {
-                  this.success(user, info)
+                  that.success(user, info)
                 }
               )
             } else {
-              this.success(user, info)
+              that.success(user, info)
             }
           })
         } else {
-          this.error('Invalid token and user id combination!')
+          that.error('Invalid token and user id combination!')
         }
       }
     )
