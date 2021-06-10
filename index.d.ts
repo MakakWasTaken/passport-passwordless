@@ -34,7 +34,7 @@ declare namespace PasswordlessToken {
   type StrategyVerify = (
     req: express.Request,
     email: string,
-    done: (error: string, user?: any, info?: { [key: string]: any }) => void
+    done: (error: Error, user?: any, info?: { [key: string]: any }) => void
   ) => void
 }
 

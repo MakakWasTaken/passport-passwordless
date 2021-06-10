@@ -85,15 +85,16 @@ module.exports = class PasswordlessStrategy extends Strategy {
       allowTokenReuse: !!this.options.allowTokenReuse,
     })
 
+    const that = this;
     //initialize the delivery
-    this.passwordless.addDelivery(this.options.delivery, {
+    this.passwordless.addDelivery(that.options.delivery, {
       ttl: this.options.tokenLifeTime,
-      tokenAlgorithm: this.options.maxTokenLength
+      tokenAlgorithm: that.options.maxTokenLength
         ? function () {
-            var buf = crypto.randomBytes(this.options.maxTokenLength)
+            var buf = crypto.randomBytes(that.options.maxTokenLength)
             return base58.encode(buf)
           }
-        : this.options.tokenAlgorithm,
+        : that.options.tokenAlgorithm,
     })
   }
 
@@ -143,7 +144,7 @@ module.exports = class PasswordlessStrategy extends Strategy {
           }
         })
       },
-      { ...this.options, userField: 'email' }
+      { ...that.options, userField: 'email' }
     )(req, {}, function (err) {
       if (err) {
         that.error(err)
@@ -167,14 +168,14 @@ module.exports = class PasswordlessStrategy extends Strategy {
           //if the token and uid combination was valid, verify the user
           that._verify(req, uid, function (err, user, info) {
             if (err) {
-              return this.error(err)
+              return that.error(err)
             }
             if (!user) {
-              return this.fail(info)
+              return that.fail(info)
             }
 
             //if no token reuse is allowed, invalidate the token after the first authentication
-            if (!this.options.allowTokenReuse) {
+            if (!that.options.allowTokenReuse) {
               that.passwordless._tokenStore.invalidateUser(
                 uid.toString(),
                 function () {
