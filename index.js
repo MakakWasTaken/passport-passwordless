@@ -31,9 +31,13 @@ module.exports = class PasswordlessStrategy extends Strategy {
     //check if the store was set or if an allready existing passwordless store was applied
     if (!this.options.store.initialized) {
       if (!this.options.store.config) {
-        throw new Error(
-          'Store parameter is missing! Please specify a passwordless datastore parameters!'
-        )
+        if (!this.options.store) {
+          throw new Error(
+            'Store parameter is missing! Please specify a passwordless datastore parameters!'
+          )
+        } else {
+          this.options.store.initialized = true
+        }
       }
 
       //check if the store variable is a string and try to load the required dataStore
@@ -52,10 +56,6 @@ module.exports = class PasswordlessStrategy extends Strategy {
           this.options.store.config
         )
         this.options.store.initialized = true
-      } else {
-        throw new Error(
-          'Please specify a valid dataStore path to load the store!'
-        )
       }
     }
 
@@ -85,7 +85,7 @@ module.exports = class PasswordlessStrategy extends Strategy {
       allowTokenReuse: !!this.options.allowTokenReuse,
     })
 
-    const that = this;
+    const that = this
     //initialize the delivery
     this.passwordless.addDelivery(that.options.delivery, {
       ttl: this.options.tokenLifeTime,
