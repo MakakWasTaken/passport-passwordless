@@ -82,7 +82,7 @@ module.exports = class PasswordlessStrategy extends Strategy {
 
     //initialize the token store
     this.passwordless.init(this.options.store, {
-      allowTokenReuse: !!this.options.allowTokenReuse,
+      allowTokenReuse: Boolean(this.options.allowTokenReuse),
     })
 
     const that = this
