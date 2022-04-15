@@ -1,7 +1,7 @@
-const base58 = require('bs58')
-const { Strategy } = require('passport')
+import { encode } from 'bs58'
+import { Strategy } from 'passport'
 
-module.exports = class PasswordlessStrategy extends Strategy {
+export default class PasswordlessStrategy extends Strategy {
   constructor(options, verify) {
     super()
     this.name = 'passwordless'
@@ -76,23 +76,23 @@ module.exports = class PasswordlessStrategy extends Strategy {
 
   //Initialize passwordless
   initPasswordless = function () {
-    this.checkOptions(this.options)
+    checkOptions(options)
 
     this.passwordless = new (require('passwordless').Passwordless)()
 
     //initialize the token store
-    this.passwordless.init(this.options.store, {
-      allowTokenReuse: Boolean(this.options.allowTokenReuse),
+    this.passwordless.init(options.store, {
+      allowTokenReuse: Boolean(options.allowTokenReuse),
     })
 
     const that = this
     //initialize the delivery
     this.passwordless.addDelivery(that.options.delivery, {
-      ttl: this.options.tokenLifeTime,
+      ttl: that.options.tokenLifeTime,
       tokenAlgorithm: that.options.maxTokenLength
         ? function () {
             var buf = crypto.randomBytes(that.options.maxTokenLength)
-            return base58.encode(buf)
+            return encode(buf)
           }
         : that.options.tokenAlgorithm,
     })

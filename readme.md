@@ -7,11 +7,15 @@ By plugging into Passport, [Passwordless](https://github.com/florianheinemann/pa
 
 ### NPM
 
-$ npm install passport-passwordless
+```bash
+npm install passport-passwordless
+```
 
 ### YARN
 
-$ yarn add passport-passwordless
+```bash
+yarn add passport-passwordless
+```
 
 ## Usage
 
